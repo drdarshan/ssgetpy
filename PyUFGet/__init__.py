@@ -10,8 +10,9 @@ To search for sparse matrices that match a given criterion, use `PyUFGet.search`
 
   PyUFGet.search(name_or_id, **kwargs)
 
-`PyUFGet.search` only returns a list of `Matrix` objects that match the selection criterion. To download the matrices
-themselves, use the `download` method in the `Matrix object` or use `PyUFGet.fetch` ::
+`PyUFGet.search` only returns a list of `Matrix` objects that match
+the selection criterion. To download the matrices themselves, use the
+`download` method in the `Matrix object` or use `PyUFGet.fetch` ::
 
   PyUFGet.fetch(name_or_id, format, location, **kwargs)
 
@@ -37,12 +38,6 @@ The rules for specifying the search criteria in `PyUFGet.search` and
      - limit: Number of matrices to return, defaults to 10.
 
 If `name_or_id` is specified, it overrides any conflicting key-value settings in `**kwargs`.
-
-`PyUFGet.search` returns a list of `Matrix` objects where each
-`Matrix` instance simply contains the metadata about the matrix such
-as the number of rows, the number of columns, datatype etc. To
-download a `Matrix` object to disk, use `Matrix.download()`; to view
-its location in the UFL website, use `Matrix.url()`.
 
 In `PyUFGet.fetch`, `format` can be one of 'MM', 'MAT' or 'RB'; 'MM'
 is the default if `format` is omitted.  Finally, `location` refers
