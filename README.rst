@@ -51,17 +51,17 @@ Examples
 Make sure you first run ``from PyUFGet import search, fetch``. Replace
 ``fetch`` with ``search`` to only return the corresponding matrices.
 
-* Download matrix with ID 42::
-  fetch(42)
+* Download matrix with ID 42:
+  -- ``fetch(42)``
 
-* Download matrices in the Harwell-Boeing collection with less than 1000 non-zeros::
-  fetch(group = 'HB', nzbounds = (None, 1000))
+* Download matrices in the Harwell-Boeing collection with less than 1000 non-zeros:
+  -- ``fetch(group = 'HB', nzbounds = (None, 1000))``
 
-* Download only the first 5 problems arising from structural analysis::
-  fetch(kind = "structural", limit = 5)
+* Download only the first 5 problems arising from structural analysis:
+  -- ``fetch(kind = "structural", limit = 5)``
 
-* Download the problems in the previous example as MATLAB .MAT files::
-  fetch(kind = "structural", format = "MAT", limit = 5)
+* Download the problems in the previous example as MATLAB .MAT files:
+  -- ``fetch(kind = "structural", format = "MAT", limit = 5)``
 
 
 Coming Soon .. *in stereo*
