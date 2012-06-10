@@ -34,14 +34,15 @@ class Matrix(object):
             return self.name + ".mat"
         else:
             raise ValueError("Format must be 'MM', 'MAT' or 'RB'")
-                
+
     def url(self, format = 'MM'):
         '''
         Returns the URL for this `Matrix` instance.
         '''
         from config import UF_ROOT_URL
         fname = self._filename(format)
-        return "/".join((UF_ROOT_URL, format, self.group, fname))
+        directory = format.lower() if format == 'MAT' else format
+        return "/".join((UF_ROOT_URL, directory, self.group, fname))
 
     def download(self, format = 'MM', destpath = None, extract = False):
         '''
