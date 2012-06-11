@@ -54,14 +54,12 @@ Make sure you first run ``from PyUFGet import search, fetch``. Replace
 ``fetch`` with ``search`` to only return the corresponding ``Matrix`` objects
 without downloading them.
 
-* Download matrix with ID 42 in the MatrixMarket format:
-  + ``fetch(42)``
-* Download matrices in the Harwell-Boeing collection with less than 1000 non-zeros:
-  + ``fetch(group = 'HB', nzbounds = (None, 1000))``
+* Download matrix with ID 42 in the MatrixMarket format: ``fetch(42)``
+* Download matrices in the Harwell-Boeing collection with less than
+  1000 non-zeros: ``fetch(group = 'HB', nzbounds = (None, 1000))``
 * Download only the first 5 problems arising from structural analysis:
-  + ``fetch(kind = "structural", limit = 5)``
-* Download the problems in the previous example as MATLAB .MAT files:
-  + ``fetch(kind = "structural", format = "MAT", limit = 5)``
+  ``fetch(kind = "structural", limit = 5)``
+* Download the problems in the previous example as MATLAB .MAT files: ``fetch(kind = "structural", format = "MAT", limit = 5)``
 
 
 Coming Soon .. *in stereo*
