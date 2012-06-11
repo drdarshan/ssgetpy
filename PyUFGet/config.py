@@ -7,10 +7,8 @@ UF_INDEX_URL = "/".join((UF_ROOT_URL, "mat", "UFget", "matrices", "UFstats.csv")
 
 if sys.platform == "win32":
     UF_DIR = os.path.join(os.environ["APPDATA"], "PyUFGet")
-elif sys.platform == "darwin":
-    UF_DIR = os.path.join(os.environ["HOME"], ".PyUFGet")
 else:
-    UF_DIR = os.path.join("/tmp", "PyUfGet")
+    UF_DIR = os.path.join(os.environ["HOME"], ".PyUFGet")
 
 UF_DB = os.path.join(UF_DIR, UF_DB)
 
