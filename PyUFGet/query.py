@@ -1,9 +1,7 @@
 def search(name_or_id = None, **kwargs):
     '''
     Search for matrix/matrices with a given name pattern or numeric ID. Optionally, limit
-    search to matrices of a specific data type or with the specified range of rows, columns and non-zero values.
-
-    
+    search to matrices of a specific data type or with the specified range of rows, columns and non-zero values.    
     '''
     import logging
     logging.debug("Name or ID = " + str(name_or_id))
@@ -30,7 +28,8 @@ def fetch(name_or_id = None, format = 'MM', location = None, **kwargs):
     if len(matrices) > 0:
         logging.info("Found %d entries" % len(matrices))
         for matrix in matrices:
-            logging.info("Downloading %s/%s" % (matrix.group, matrix.name))
+            logging.info("Downloading %s/%s to %s" % \
+                             (matrix.group, matrix.name, matrix.localpath(format, location, extract = True)[0]))
             matrix.download(format, location, extract = True)
     return matrices
         
@@ -63,6 +62,12 @@ def cli(argv):
 
     parser.add_option_group(g)
 
+    lg = OptionGroup(parser, "Logging and verbosity options", "These options govern the level of spew from PyUFGet. By default, PyUFGet prints a small number of messages such as the number of matrices being downloaded and where they are being downloaded to. To suppress these message, pass --quiet. To enable debug diagnostics, pass --verbose.")
+    lg.add_option("--verbose", action="store_true", dest="verbose", default=False)
+    lg.add_option("--quiet", action="store_true", dest="quiet", default=False)
+    
+    parser.add_option_group(lg)
+
     if len(argv) == 0:
         parser.print_help()
         return
@@ -93,5 +98,5 @@ def cli(argv):
 
     import logging
     logging.basicConfig(level=logging.DEBUG)
-
+    logging.debug("format = " + options.format)
     fetch(name_or_id, options.format, options.location, **optdict)

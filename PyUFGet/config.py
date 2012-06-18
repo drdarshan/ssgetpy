@@ -1,4 +1,4 @@
-import os, sys, logging
+import os, sys
 UF_DIR = None
 UF_DB  = "index.db"
 UF_TABLE = "MATRICES"
@@ -15,7 +15,9 @@ UF_DB = os.path.join(UF_DIR, UF_DB)
 if not os.access(UF_DIR, os.R_OK | os.W_OK):
     os.makedirs(UF_DIR)
 
-logging.debug("UF_DIR = %s, UF_DB = %s, UF_TABLE = %s, UF_ROOT_URL = %s, UF_INDEX_URL = %s" % (UF_DIR, UF_DB, UF_TABLE, UF_ROOT_URL, UF_INDEX_URL))
+def dump():
+    import logging
+    logging.debug(dict(UF_DIR=UF_DIR, UF_DB=UF_DB, UF_TABLE=UF_TABLE, UF_ROOT_URL=UF_ROOT_URL, UF_INDEX_URL=UF_INDEX_URL))
 
 
 
