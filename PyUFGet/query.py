@@ -26,7 +26,7 @@ def fetch(name_or_id = None, format = 'MM', location = None, **kwargs):
     import logging
     matrices = search(name_or_id, **kwargs)
     if len(matrices) > 0:
-        logging.info("Found %d entries" % len(matrices))
+        logging.info("Found %d %s" % (len(matrices), "entry" if len(matrices) == 1 else "entries"))
         for matrix in matrices:
             logging.info("Downloading %s/%s to %s" % \
                              (matrix.group, matrix.name, matrix.localpath(format, location, extract = True)[0]))
@@ -63,8 +63,8 @@ def cli(argv):
     parser.add_option_group(g)
 
     lg = OptionGroup(parser, "Logging and verbosity options", "These options govern the level of spew from PyUFGet. By default, PyUFGet prints a small number of messages such as the number of matrices being downloaded and where they are being downloaded to. To suppress these message, pass --quiet. To enable debug diagnostics, pass --verbose.")
-    lg.add_option("--verbose", action="store_true", dest="verbose", default=False)
-    lg.add_option("--quiet", action="store_true", dest="quiet", default=False)
+    lg.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False, help="Enable debug diagnostics.")
+    lg.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False, help="Do not print any messages to the console.")
     
     parser.add_option_group(lg)
 
@@ -75,7 +75,7 @@ def cli(argv):
     options, args = parser.parse_args(argv)
 
     if len(args) > 1:
-        raise ValueError("Too many argument")
+        raise ValueError("Too many positional arguments.")
 
     name_or_id = args[0] if len(args) == 1 else None
 
@@ -97,6 +97,11 @@ def cli(argv):
         optdict["limit"] = options.limit
 
     import logging
-    logging.basicConfig(level=logging.DEBUG)
-    logging.debug("format = " + options.format)
+    if options.quiet:
+        pass
+    elif options.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
     fetch(name_or_id, options.format, options.location, **optdict)
