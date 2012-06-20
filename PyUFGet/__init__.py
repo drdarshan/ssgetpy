@@ -76,7 +76,7 @@ the command line as follows ::
     -o LOCATION, --outdir=LOCATION
                           The directory in the local machine where matrices will
                           be downloaded to. Defaults to
-                          C:\Users\PappuHari\AppData\Roaming\PyUFGet
+                          %AppData%\PyUFGet on Windows and ~/.PyUFGet on Unix.
   
     Size and Non-zero filters:
       These options may be used to restrict the shape or number of non-zero
