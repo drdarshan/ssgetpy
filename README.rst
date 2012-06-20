@@ -38,8 +38,10 @@ possible. You therefore only need stock Python 2.6 or higher to run
 ``PyUFGet``; you do not need NumPy, SciPy, HDF5 or other non-standard
 packages.
 
-To install, simply download the ``PyUFGet`` directory and add it to your
-``PYTHONPATH``. 
+To install, simply download the ``PyUFGet`` directory and add it to
+your ``PYTHONPATH``. Alternatively, download the ``distutils``-based
+zip file in the ``dist`` directory, unzip it and run ``python setup.py
+install``.
 
 From Python, ``import PyUFGet`` and type ``help(PyUFGet)`` to get a detailed
 help message on how to use ``PyUFGet`` to search and download sparse matrices.
