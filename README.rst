@@ -1,4 +1,3 @@
-
 ====================================================================================================
 PyUFGet: Search and download sparse matrices from the University of Florida Sparse Matrix Collection
 ====================================================================================================
@@ -66,8 +65,6 @@ without downloading them.
 
 Coming Soon .. *in stereo*
 ==========================
-* Add options to turn on logging from the CLI. Right now, you have to
-  look in the output directory to see what files you've downloaded.
 * The index currently needs to be manually refreshed. I will make the
   process less sucky.
 
