@@ -51,7 +51,7 @@ def cli(argv):
     parser.add_option("-l", "--limit", action="store", type="int", dest="limit", help="The maximum number of matrices to be downloaded. Defaults to 10.")
     parser.add_option("-o", "--outdir", action="store", type="string", dest="location", \
                       help="The directory in the local machine where matrices will be downloaded to. Defaults to " + UF_DIR)
-    parser.add_option("--dry-run", action="store_true", default=False, help="If True, only print the matrices that will be downloaded but do not actually download them.")
+    parser.add_option("--dry-run", action="store_true", dest = "dry_run", default=False, help="If True, only print the matrices that will be downloaded but do not actually download them.")
     
     g = OptionGroup(parser, "Size and Non-zero filters", "These options may be used to restrict the shape or number of non-zero elements of the matrices to be downloaded")
     
@@ -106,4 +106,4 @@ def cli(argv):
     else:
         logging.basicConfig(level=logging.INFO)
 
-    fetch(name_or_id, options.format, options.location, **optdict)
+    fetch(name_or_id, options.format, options.location, options.dry_run, **optdict)
