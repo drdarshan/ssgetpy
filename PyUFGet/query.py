@@ -22,7 +22,7 @@ def search(name_or_id = None, **kwargs):
     from dbinstance import instance
     return instance.search(**kwargs)
 
-def fetch(name_or_id = None, format = 'MM', location = None, **kwargs):
+def fetch(name_or_id = None, format = 'MM', location = None, dry_run = False, **kwargs):
     import logging
     matrices = search(name_or_id, **kwargs)
     if len(matrices) > 0:
@@ -30,7 +30,8 @@ def fetch(name_or_id = None, format = 'MM', location = None, **kwargs):
         for matrix in matrices:
             logging.info("Downloading %s/%s to %s" % \
                              (matrix.group, matrix.name, matrix.localpath(format, location, extract = True)[0]))
-            matrix.download(format, location, extract = True)
+            if not dry_run:
+                matrix.download(format, location, extract = True)
     return matrices
         
 def cli(argv):
@@ -50,7 +51,8 @@ def cli(argv):
     parser.add_option("-l", "--limit", action="store", type="int", dest="limit", help="The maximum number of matrices to be downloaded. Defaults to 10.")
     parser.add_option("-o", "--outdir", action="store", type="string", dest="location", \
                       help="The directory in the local machine where matrices will be downloaded to. Defaults to " + UF_DIR)
-
+    parser.add_option("--dry-run", action="store_true", default=False, help="If True, only print the matrices that will be downloaded but do not actually download them.")
+    
     g = OptionGroup(parser, "Size and Non-zero filters", "These options may be used to restrict the shape or number of non-zero elements of the matrices to be downloaded")
     
     g.add_option("--min-rows", action="store", type="int", dest="min_rows", help="The minimum number of rows in the matrix/matrices.")
