@@ -1,7 +1,13 @@
-from config import UF_DB, UF_TABLE
 
-class MatrixDB(object):
-    def __init__(self, db = UF_DB, table = UF_TABLE):
+import logging
+logger = logging.getLogger(__name__)
+
+
+from .config import SS_DB, SS_TABLE
+from .matrix import Matrix, MatrixList
+
+class MatrixDB:
+    def __init__(self, db = SS_DB, table = SS_TABLE):
         import sqlite3
         self.db = db;
         self.matrix_table = table
@@ -90,7 +96,7 @@ class MatrixDB(object):
         spd_constraint = MatrixDB._bool_constraint("isspd", isspd)
         knd_constraint = MatrixDB._like_constraint("kind", kind)
 
-        constraints = filter(lambda x: x is not None, (mid_constraint, \
+        constraints = list(filter(lambda x: x is not None, (mid_constraint, \
                                                            grp_constraint,\
                                                            nam_constraint,\
                                                            row_constraint,\
@@ -99,15 +105,13 @@ class MatrixDB(object):
                                                            dty_constraint,\
                                                            geo_constraint,\
                                                            spd_constraint,\
-                                                           knd_constraint))
+                                                           knd_constraint)))
 
         if any(constraints):
             querystring += " WHERE " + " AND ".join(constraints)
 
         querystring += " LIMIT (%s)" % limit
 
-        import logging
-        logging.debug(querystring)
+        logger.debug(querystring)
 
-        import matrix
-        return [matrix.Matrix(*x) for x in self.conn.execute(querystring).fetchall()]
+        return MatrixList(Matrix(*x) for x in self.conn.execute(querystring).fetchall())

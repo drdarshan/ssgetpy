@@ -1,23 +1,23 @@
 '''
-The PyUFGet module provides interfaces to search and download matrices from the
+The `ssget` module provides interfaces to search and download matrices from the
 University of Florida Sparse Matrix Collection.
 
-There are two ways to use PyUFGet:
-* By importing the PyUFGet module in Python, or
+There are two ways to use `ssget`:
+* By importing the `ssget` module in Python, or
 * As a standalone command-line tool
 
-To search for sparse matrices that match a given criterion, use `PyUFGet.search` ::
+To search for sparse matrices that match a given criterion, use `ssget.search` ::
 
-  PyUFGet.search(name_or_id, **kwargs)
+  `ssget.search(name_or_id, **kwargs)`
 
-`PyUFGet.search` only returns a list of `Matrix` objects that match
+`ssget.search` only returns a list of `Matrix` objects that match
 the selection criterion. To download the matrices themselves, use the
-`download` method in the `Matrix object` or use `PyUFGet.fetch` ::
+`download` method in the `Matrix object` or use `ssget.fetch` ::
 
-  PyUFGet.fetch(name_or_id, format, location, **kwargs)
+  `ssget.fetch(name_or_id, format, location, **kwargs)`
 
-The rules for specifying the search criteria in `PyUFGet.search` and
- `PyUFGet.fetch` are as follows:
+The rules for specifying the search criteria in `ssget.search` and
+ `ssget.fetch` are as follows:
 
 1. `name_or_id` can be either the numerical ID of the matrix such as
    `42` or a pattern such as `"HB/ash*"` or `"c-"`. This field is
@@ -39,17 +39,17 @@ The rules for specifying the search criteria in `PyUFGet.search` and
 
 If `name_or_id` is specified, it overrides any conflicting key-value settings in `**kwargs`.
 
-In `PyUFGet.fetch`, `format` can be one of 'MM', 'MAT' or 'RB'; 'MM'
+In `ssget.fetch`, `format` can be one of 'MM', 'MAT' or 'RB'; 'MM'
 is the default if `format` is omitted.  Finally, `location` refers
 to the directory where the matrices will be downloaded on the local
-machine. It defaults to `%APPDATA%/PyUFGet` on Windows and
-`~/.PyUFGet` on Unix-like platforms.
+machine. It defaults to `%APPDATA%/`ssget`` on Windows and
+`~/.ssget` on Unix-like platforms.
 
-In addition to its usage as a Python library, PyUFGet can be run from
+In addition to its usage as a Python library, `ssget` can be run from
 the command line as follows ::
 
-  python PyUFGet
-  Usage: PyUFGet [NameOrID] [options]
+  python `ssget`
+  Usage: `ssget` [NameOrID] [options]
 
      NameOrID             A numerical matrix ID or a pattern matching the name of
                           the matrix.
@@ -76,7 +76,7 @@ the command line as follows ::
     -o LOCATION, --outdir=LOCATION
                           The directory in the local machine where matrices will
                           be downloaded to. Defaults to
-                          %AppData%\PyUFGet on Windows and ~/.PyUFGet on Unix.
+                          `%AppData%\ssget` on Windows and `~/.ssget` on Unix.
   
     Size and Non-zero filters:
       These options may be used to restrict the shape or number of non-zero
@@ -97,5 +97,5 @@ the command line as follows ::
                           The maximum number of non-zero values in the
                           matrix/matrices.
 '''
-from query import search, fetch, cli
+from .query import search, fetch, cli
 __all__ = ["query"]

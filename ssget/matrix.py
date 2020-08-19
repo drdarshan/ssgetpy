@@ -1,4 +1,29 @@
-class Matrix(object):
+import os
+import requests
+import shutil
+import time
+from tqdm.auto import tqdm
+from .config import SS_DIR, SS_ROOT_URL
+from . import bundle
+
+class MatrixList(list):
+    def _repr_html_(self):
+        body = ''.join(r.to_html_row() for r in self)
+        return f'<table>{Matrix.html_header()}<tbody>{body}</tbody></table>'
+
+    def __getitem__(self, expr):
+        result = super().__getitem__(expr)
+        return MatrixList(result) if isinstance(expr, slice) else result
+
+    def download(self, format = 'MM', destpath = None, extract = False):
+        with tqdm(total=len(self), desc='Overall progress') as pbar:
+            for matrix in self:
+                matrix.download(format, destpath, extract)
+                pbar.update(1)
+
+
+
+class Matrix:
     '''
     A `Matrix` object represents a single matrix in the University of Florida sparse matrix collection. It has the following attributes:
     `id`   : The unique identifier for the matrix in the database.
@@ -12,6 +37,23 @@ class Matrix(object):
     `isspd` : True if this matrix is symmetric, positive definite
     `kind`  : The underlying problem domain
     '''
+
+    attr_list =  ['Id', 'Group', 'Name', 'Rows', 'Cols', 'NNZ', 'DType', '2D/3D Discretization?', 'SPD?', 'Pattern Symmetry', 'Numerical Symmetry', 'Kind', 'Icon']
+
+    @staticmethod
+    def html_header():
+        return '<thead>' + ''.join(f'<th>{attr}</th>' for attr in Matrix.attr_list) + '</thead>'
+
+    @staticmethod
+    def _render_item_html(key, value):
+        if key == 'Icon':
+            return f'<img src="{value}">'
+        if key in ('Pattern Symmetry', 'Numerical Symmetry'):
+            return f'{value:0.2}'
+        if key in ('2D/3D Discretization?', 'SPD?'):
+            return 'Yes' if value else 'No'
+        return str(value)
+
     def __init__(self, identifier, group, name, \
                      rows, cols, nnz, dtype,\
                      is2d3d, isspd, psym, nsym, kind):
@@ -28,11 +70,16 @@ class Matrix(object):
         self.nsym = nsym
         self.kind = kind
 
-    def tuple(self):
+    def to_tuple(self):
         '''
         Returns the fields in a `Matrix` instance in a tuple.
         '''
-        return self.id, self.group, self.name, self.rows, self.cols, self.nnz, self.dtype, self.is2d3d, self.isspd, self.psym, self.nsym, self.kind
+        return self.id, self.group, self.name, self.rows, self.cols, self.nnz, self.dtype, self.is2d3d, self.isspd, self.psym, self.nsym, self.kind, self.icon_url()
+
+    
+    def to_html_row(self):
+        return '<tr>' + ''.join(f'<td>{Matrix._render_item_html(key, value)}</td>' for key,value in zip(Matrix.attr_list, self.to_tuple())) + '</tr>' 
+
 
     def _filename(self, format = 'MM'):
         if format == 'MM' or format == 'RB':
@@ -43,18 +90,18 @@ class Matrix(object):
             raise ValueError("Format must be 'MM', 'MAT' or 'RB'")
 
     def _defaultdestpath(self, format = 'MM'):
-        from config import UF_DIR
-        import os
-        return os.path.join(UF_DIR, format, self.group)
+        return os.path.join(SS_DIR, format, self.group)
+
+    def icon_url(self):
+        return '/'.join((SS_ROOT_URL, 'files', self.group, self.name + '.png'))
 
     def url(self, format = 'MM'):
         '''
         Returns the URL for this `Matrix` instance.
         '''
-        from config import UF_ROOT_URL
         fname = self._filename(format)
         directory = format.lower() if format == 'MAT' else format
-        return "/".join((UF_ROOT_URL, directory, self.group, fname))
+        return "/".join((SS_ROOT_URL, directory, self.group, fname))
 
     
     def localpath(self, format = 'MM', destpath = None, extract = False):
@@ -62,7 +109,6 @@ class Matrix(object):
 
         # localdestpath is the directory containing the unzipped files
         # in the case of MM and RB (if extract is true) or the file it self in the case of MAT (or if extract is False)
-        import os
         localdest     = os.path.join(destpath, self._filename(format))
         localdestpath = localdest if (format == "MAT" or not extract) else os.path.join(destpath, self.name)
 
@@ -80,26 +126,31 @@ class Matrix(object):
         # if extract = True, localdestpath is the directory containing the unzipped matrix
         localdestpath, localdest = self.localpath(format, destpath, extract)
 
-        import os
         if not os.access(localdestpath, os.F_OK):
             # Create the destination path if necessary
-            if not os.access(destpath, os.W_OK):
-                os.makedirs(destpath)
+            os.makedirs(destpath, exist_ok=True)
 
-            import urllib2, shutil
-            infile = urllib2.urlopen(urllib2.Request(self.url(format)))
-            # Use SHUTIL to download the file in chunks
-            with open(localdest, "wb") as outfile:
-                shutil.copyfileobj(infile, outfile)
-            infile.close()
+            response = requests.get(self.url(format), stream=True)
+            content_length = int(response.headers['content-length'])
+
+            with open(localdest, "wb") as outfile, tqdm(total=content_length, desc=self.name, unit='B') as pbar:
+                for chunk in response.iter_content(chunk_size=4096):
+                    outfile.write(chunk)
+                    pbar.update(4096)
+                    time.sleep(0.1)
+
+
             if extract and (format == "MM" or format == "RB"):
-                import bundle
                 bundle.extract(localdest)
 
         return localdestpath, localdest
 
     def __str__(self):
-        return str(self.tuple())
+        return str(self.to_tuple())
 
     def __repr__(self):
-        return "Matrix" + str(self.tuple())
+        return "Matrix" + str(self.to_tuple())        
+
+    def _repr_html_(self):
+        return f'<table>{Matrix.html_header()}<tbody>{self.to_html_row()}</tbody></table>'
+

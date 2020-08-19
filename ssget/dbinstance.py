@@ -2,13 +2,16 @@
 The `dbinstance` module creates a singleton `MatrixDB` database instance, populating
 it from UFStats.csv if necessary. 
 '''
-from db import MatrixDB
+import logging
+logger = logging.getLogger(__name__)
+
+from .db import MatrixDB
+from . import csvindex
+
 
 instance = MatrixDB()
 
 if instance.nrows == 0:
-    import logging
-    logging.info("Creating index from CSV file...")
+    logger.info("Creating index from CSV file...")
     
-    import csvindex
     instance.insert(csvindex.generate())
