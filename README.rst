@@ -1,6 +1,7 @@
 ====================================================================================================
 PyUFGet: Search and download sparse matrices from the University of Florida Sparse Matrix Collection
 ====================================================================================================
+![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg)
 
 About
 =====
