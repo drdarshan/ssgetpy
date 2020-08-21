@@ -1,13 +1,9 @@
-====================================================================================================
-PyUFGet: Search and download sparse matrices from the University of Florida Sparse Matrix Collection
-====================================================================================================
+# PyUFGet: Search and download sparse matrices from the University of Florida Sparse Matrix Collection
 ![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg)
 
-About
-=====
-
-I recently needed to download some test matrices from the `University
-of Florida Sparse Matrix Collection`_. Unfortunately I noticed that
+## About
+I recently needed to download some test matrices from the [University
+of Florida Sparse Matrix Collection](http://www.cise.ufl.edu/research/sparse/matrices/index.html). Unfortunately I noticed that
 the existing Python interface would only let me download matrices by
 their IDs and there was no way to filter matrices before downloading
 them. While this functionality was available in the MATLAB and Java
@@ -28,13 +24,10 @@ the Java interface (of course without the whizbang GUI :-)). I might
 add a GUI on top of the search/download functionality once I'm
 sufficiently motivated to learn WxPython or PyQT.
 
-.. _University of Florida Sparse Matrix Collection: http://www.cise.ufl.edu/research/sparse/matrices/index.html
 
-Requirements and installation
-=============================
-
+## Requirements and installation
 I have tried to keep the list of prerequisites as small as
-possible. You therefore only need stock Python 2.6 or higher to run
+possible. You therefore only need stock Python 3.6 or higher to run
 ``PyUFGet``; you do not need NumPy, SciPy, HDF5 or other non-standard
 packages.
 
@@ -49,9 +42,7 @@ help message on how to use ``PyUFGet`` to search and download sparse matrices.
 From the command-line, run ``python PyUFGet`` or ``python PyUFGet --help`` to see the
 list of options.
 
-Examples
-========
-
+## Examples
 Make sure you first run ``from PyUFGet import search, fetch``. Replace
 ``fetch`` with ``search`` to only return the corresponding ``Matrix`` objects
 without downloading them.
@@ -64,16 +55,9 @@ without downloading them.
 * Download the problems in the previous example as MATLAB .MAT files: ``fetch(kind = "structural", format = "MAT", limit = 5)``
 
 
-Coming Soon .. *in stereo*
-==========================
-* The index currently needs to be manually refreshed. I will make the
-  process less sucky.
 
-
-License
-=======
-
-*PyUFGet* is licensed under the `MIT/X11 license`_:
+## License
+*PyUFGet* is licensed under the [MIT/X11 license](http://www.opensource.org/licenses/mit-license.php):
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -94,4 +78,3 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-.. _`MIT/X11 license`: http://www.opensource.org/licenses/mit-license.php
