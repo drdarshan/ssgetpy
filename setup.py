@@ -12,5 +12,5 @@ setup(name="ssget",
             "ssget = ssget.query:cli",
         ],
       },
-      install_requires=['tqdm']
+      install_requires=['requests>2.22', 'tqdm>4.48']
 )
