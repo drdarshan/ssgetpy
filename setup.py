@@ -1,4 +1,10 @@
+import pathlib
+
 from setuptools import setup
+
+HERE = pathlib.Path(__file__).parent
+
+README = (HERE / "README.md").read_text()
 
 setup(name="ssgetpy",
       version="1.0",
@@ -6,6 +12,8 @@ setup(name="ssgetpy",
       author="Sudarshan Raghunathan",
       author_email="darshan@alum.mit.edu",
       url="http://www.github.com/drdarshan/ssgetpy",
+      long_description=README,
+      long_description_content_type="text/markdown",
       packages=["ssgetpy"],
       entry_points={
         "console_scripts": [

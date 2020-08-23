@@ -1,4 +1,4 @@
-'''
+"""
 The `ssgetpy` module provides interfaces to search and download matrices from the
 University of Florida Sparse Matrix Collection.
 
@@ -96,6 +96,7 @@ the command line as follows ::
       --max-nnzs=MAX_NNZS
                           The maximum number of non-zero values in the
                           matrix/matrices.
-'''
-from .query import search, fetch, cli
+"""
+from .query import cli, fetch, search
+
 __all__ = ["query"]

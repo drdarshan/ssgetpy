@@ -1,5 +1,7 @@
 import unittest
+
 import ssgetpy as p
+
 
 class TestPyUFGet(unittest.TestCase):
     def test_search_by_id(self):
@@ -48,5 +50,3 @@ class TestPyUFGet(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-

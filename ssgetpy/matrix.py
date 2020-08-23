@@ -1,30 +1,32 @@
 import os
-import requests
 import shutil
 import time
+
+import requests
 from tqdm.auto import tqdm
-from .config import SS_DIR, SS_ROOT_URL
+
 from . import bundle
+from .config import SS_DIR, SS_ROOT_URL
+
 
 class MatrixList(list):
     def _repr_html_(self):
-        body = ''.join(r.to_html_row() for r in self)
-        return f'<table>{Matrix.html_header()}<tbody>{body}</tbody></table>'
+        body = "".join(r.to_html_row() for r in self)
+        return f"<table>{Matrix.html_header()}<tbody>{body}</tbody></table>"
 
     def __getitem__(self, expr):
         result = super().__getitem__(expr)
         return MatrixList(result) if isinstance(expr, slice) else result
 
-    def download(self, format = 'MM', destpath = None, extract = False):
-        with tqdm(total=len(self), desc='Overall progress') as pbar:
+    def download(self, format="MM", destpath=None, extract=False):
+        with tqdm(total=len(self), desc="Overall progress") as pbar:
             for matrix in self:
                 matrix.download(format, destpath, extract)
                 pbar.update(1)
 
 
-
 class Matrix:
-    '''
+    """
     A `Matrix` object represents a single matrix in the University of Florida sparse matrix collection. It has the following attributes:
     `id`   : The unique identifier for the matrix in the database.
     `group`: The name of the group this matrix belongs to.
@@ -36,27 +38,57 @@ class Matrix:
     `is2d3d`: True if this matrix comes from a 2D or 3D discretization.
     `isspd` : True if this matrix is symmetric, positive definite
     `kind`  : The underlying problem domain
-    '''
+    """
 
-    attr_list =  ['Id', 'Group', 'Name', 'Rows', 'Cols', 'NNZ', 'DType', '2D/3D Discretization?', 'SPD?', 'Pattern Symmetry', 'Numerical Symmetry', 'Kind', 'Spy Plot']
+    attr_list = [
+        "Id",
+        "Group",
+        "Name",
+        "Rows",
+        "Cols",
+        "NNZ",
+        "DType",
+        "2D/3D Discretization?",
+        "SPD?",
+        "Pattern Symmetry",
+        "Numerical Symmetry",
+        "Kind",
+        "Spy Plot",
+    ]
 
     @staticmethod
     def html_header():
-        return '<thead>' + ''.join(f'<th>{attr}</th>' for attr in Matrix.attr_list) + '</thead>'
+        return (
+            "<thead>"
+            + "".join(f"<th>{attr}</th>" for attr in Matrix.attr_list)
+            + "</thead>"
+        )
 
     @staticmethod
     def _render_item_html(key, value):
-        if key == 'Spy Plot':
+        if key == "Spy Plot":
             return f'<img src="{value}">'
-        if key in ('Pattern Symmetry', 'Numerical Symmetry'):
-            return f'{value:0.2}'
-        if key in ('2D/3D Discretization?', 'SPD?'):
-            return 'Yes' if value else 'No'
+        if key in ("Pattern Symmetry", "Numerical Symmetry"):
+            return f"{value:0.2}"
+        if key in ("2D/3D Discretization?", "SPD?"):
+            return "Yes" if value else "No"
         return str(value)
 
-    def __init__(self, identifier, group, name, \
-                     rows, cols, nnz, dtype,\
-                     is2d3d, isspd, psym, nsym, kind):
+    def __init__(
+        self,
+        identifier,
+        group,
+        name,
+        rows,
+        cols,
+        nnz,
+        dtype,
+        is2d3d,
+        isspd,
+        psym,
+        nsym,
+        kind,
+    ):
         self.id = identifier
         self.group = group
         self.name = name
@@ -71,53 +103,75 @@ class Matrix:
         self.kind = kind
 
     def to_tuple(self):
-        '''
+        """
         Returns the fields in a `Matrix` instance in a tuple.
-        '''
-        return self.id, self.group, self.name, self.rows, self.cols, self.nnz, self.dtype, self.is2d3d, self.isspd, self.psym, self.nsym, self.kind, self.icon_url()
+        """
+        return (
+            self.id,
+            self.group,
+            self.name,
+            self.rows,
+            self.cols,
+            self.nnz,
+            self.dtype,
+            self.is2d3d,
+            self.isspd,
+            self.psym,
+            self.nsym,
+            self.kind,
+            self.icon_url(),
+        )
 
-    
     def to_html_row(self):
-        return '<tr>' + ''.join(f'<td>{Matrix._render_item_html(key, value)}</td>' for key,value in zip(Matrix.attr_list, self.to_tuple())) + '</tr>' 
+        return (
+            "<tr>"
+            + "".join(
+                f"<td>{Matrix._render_item_html(key, value)}</td>"
+                for key, value in zip(Matrix.attr_list, self.to_tuple())
+            )
+            + "</tr>"
+        )
 
-
-    def _filename(self, format = 'MM'):
-        if format == 'MM' or format == 'RB':
+    def _filename(self, format="MM"):
+        if format == "MM" or format == "RB":
             return self.name + ".tar.gz"
-        elif format == 'MAT':
+        elif format == "MAT":
             return self.name + ".mat"
         else:
             raise ValueError("Format must be 'MM', 'MAT' or 'RB'")
 
-    def _defaultdestpath(self, format = 'MM'):
+    def _defaultdestpath(self, format="MM"):
         return os.path.join(SS_DIR, format, self.group)
 
     def icon_url(self):
-        return '/'.join((SS_ROOT_URL, 'files', self.group, self.name + '.png'))
+        return "/".join((SS_ROOT_URL, "files", self.group, self.name + ".png"))
 
-    def url(self, format = 'MM'):
-        '''
+    def url(self, format="MM"):
+        """
         Returns the URL for this `Matrix` instance.
-        '''
+        """
         fname = self._filename(format)
-        directory = format.lower() if format == 'MAT' else format
+        directory = format.lower() if format == "MAT" else format
         return "/".join((SS_ROOT_URL, directory, self.group, fname))
 
-    
-    def localpath(self, format = 'MM', destpath = None, extract = False):
+    def localpath(self, format="MM", destpath=None, extract=False):
         destpath = destpath or self._defaultdestpath(format)
 
         # localdestpath is the directory containing the unzipped files
         # in the case of MM and RB (if extract is true) or the file it self in the case of MAT (or if extract is False)
-        localdest     = os.path.join(destpath, self._filename(format))
-        localdestpath = localdest if (format == "MAT" or not extract) else os.path.join(destpath, self.name)
+        localdest = os.path.join(destpath, self._filename(format))
+        localdestpath = (
+            localdest
+            if (format == "MAT" or not extract)
+            else os.path.join(destpath, self.name)
+        )
 
         return localdestpath, localdest
 
-    def download(self, format = 'MM', destpath = None, extract = False):
-        '''
+    def download(self, format="MM", destpath=None, extract=False):
+        """
         Downloads this `Matrix` instance to the local machine, optionally unpacking any TAR.GZ files.
-        '''
+        """
         # destpath is the directory containing the matrix
         # It is of the form ~/.PyUFGet/MM/HB
         destpath = destpath or self._defaultdestpath(format)
@@ -131,15 +185,15 @@ class Matrix:
             os.makedirs(destpath, exist_ok=True)
 
             response = requests.get(self.url(format), stream=True)
-            content_length = int(response.headers['content-length'])
+            content_length = int(response.headers["content-length"])
 
-            with open(localdest, "wb") as outfile, \
-                 tqdm(total=content_length, desc=self.name, unit='B') as pbar:
+            with open(localdest, "wb") as outfile, tqdm(
+                total=content_length, desc=self.name, unit="B"
+            ) as pbar:
                 for chunk in response.iter_content(chunk_size=4096):
                     outfile.write(chunk)
                     pbar.update(4096)
                     time.sleep(0.1)
-
 
             if extract and (format == "MM" or format == "RB"):
                 bundle.extract(localdest)
@@ -150,8 +204,9 @@ class Matrix:
         return str(self.to_tuple())
 
     def __repr__(self):
-        return "Matrix" + str(self.to_tuple())        
+        return "Matrix" + str(self.to_tuple())
 
     def _repr_html_(self):
-        return f'<table>{Matrix.html_header()}<tbody>{self.to_html_row()}</tbody></table>'
-
+        return (
+            f"<table>{Matrix.html_header()}<tbody>{self.to_html_row()}</tbody></table>"
+        )
