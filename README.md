@@ -1,5 +1,5 @@
 # SSGETPY: Search and download sparse matrices from the SuiteSparse Matrix Collection
-![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg)
+![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/drdarshan/ssgetpy/master?filepath=demo.ipynb)
 
 ## About
 I recently needed to download some test matrices from the [SuiteSparse Matrix Collection](https://people.engr.tamu.edu/davis/matrices.html). Unfortunately I noticed that
