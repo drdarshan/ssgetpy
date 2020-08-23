@@ -1,9 +1,8 @@
-# PyUFGet: Search and download sparse matrices from the University of Florida Sparse Matrix Collection
+# SSGETPY: Search and download sparse matrices from the SuiteSparse Matrix Collection
 ![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg)
 
 ## About
-I recently needed to download some test matrices from the [University
-of Florida Sparse Matrix Collection](http://www.cise.ufl.edu/research/sparse/matrices/index.html). Unfortunately I noticed that
+I recently needed to download some test matrices from the [SuiteSparse Matrix Collection](https://people.engr.tamu.edu/davis/matrices.html). Unfortunately I noticed that
 the existing Python interface would only let me download matrices by
 their IDs and there was no way to filter matrices before downloading
 them. While this functionality was available in the MATLAB and Java
@@ -18,32 +17,29 @@ files more than once and I can easily map all filters, no matter how
 complex to SQLite's dialect of SQL. Hopefully, it should also make it
 easier to create ports of this utility to other languages and
 environments without having to duplicate a lot of the functionality. 
-
-The functionality provided by ``PyUFGet`` should be roughly on par with
-the Java interface (of course without the whizbang GUI :-)). I might
-add a GUI on top of the search/download functionality once I'm
-sufficiently motivated to learn WxPython or PyQT.
-
+ 
 
 ## Requirements and installation
 I have tried to keep the list of prerequisites as small as
 possible. You therefore only need stock Python 3.6 or higher to run
-``PyUFGet``; you do not need NumPy, SciPy, HDF5 or other non-standard
+``ssgetpy``; you do not need NumPy, SciPy, HDF5 or other non-standard
 packages.
 
-To install, simply download the ``PyUFGet`` directory and add it to
-your ``PYTHONPATH``. Alternatively, download the ``distutils``-based
-zip file in the ``dist`` directory, unzip it and run ``python setup.py
-install``.
+To install, simply run:
+```
+pip install ssgetpy
+```
 
-From Python, ``import PyUFGet`` and type ``help(PyUFGet)`` to get a detailed
-help message on how to use ``PyUFGet`` to search and download sparse matrices.
+This will install the `ssgetpy` Python module as well as a `ssgetpy` command-line script. 
 
-From the command-line, run ``python PyUFGet`` or ``python PyUFGet --help`` to see the
+From Python, run ``import ssgetpy`` and type ``help(ssgetpy)`` to get a detailed
+help message on how to use ``ssgetpy`` to search and download sparse matrices.
+
+From the command-line, run ``ssgetpy`` or ``ssgetpy --help`` to see the
 list of options.
 
 ## Examples
-Make sure you first run ``from PyUFGet import search, fetch``. Replace
+Make sure you first run ``from ssgetpy import search, fetch``. Replace
 ``fetch`` with ``search`` to only return the corresponding ``Matrix`` objects
 without downloading them.
 
@@ -57,7 +53,7 @@ without downloading them.
 
 
 ## License
-*PyUFGet* is licensed under the [MIT/X11 license](http://www.opensource.org/licenses/mit-license.php):
+*ssgetpy* is licensed under the [MIT/X11 license](http://www.opensource.org/licenses/mit-license.php):
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
