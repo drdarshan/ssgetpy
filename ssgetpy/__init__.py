@@ -1,23 +1,23 @@
 '''
-The `ssget` module provides interfaces to search and download matrices from the
+The `ssgetpy` module provides interfaces to search and download matrices from the
 University of Florida Sparse Matrix Collection.
 
-There are two ways to use `ssget`:
-* By importing the `ssget` module in Python, or
+There are two ways to use `ssgetpy`:
+* By importing the `ssgetpy` module in Python, or
 * As a standalone command-line tool
 
-To search for sparse matrices that match a given criterion, use `ssget.search` ::
+To search for sparse matrices that match a given criterion, use `ssgetpy.search` ::
 
-  `ssget.search(name_or_id, **kwargs)`
+  `ssgetpy.search(name_or_id, **kwargs)`
 
-`ssget.search` only returns a list of `Matrix` objects that match
+`ssgetpy.search` only returns a list of `Matrix` objects that match
 the selection criterion. To download the matrices themselves, use the
-`download` method in the `Matrix object` or use `ssget.fetch` ::
+`download` method in the `Matrix object` or use `ssgetpy.fetch` ::
 
-  `ssget.fetch(name_or_id, format, location, **kwargs)`
+  `ssgetpy.fetch(name_or_id, format, location, **kwargs)`
 
-The rules for specifying the search criteria in `ssget.search` and
- `ssget.fetch` are as follows:
+The rules for specifying the search criteria in `ssgetpy.search` and
+ `ssgetpy.fetch` are as follows:
 
 1. `name_or_id` can be either the numerical ID of the matrix such as
    `42` or a pattern such as `"HB/ash*"` or `"c-"`. This field is
@@ -39,17 +39,17 @@ The rules for specifying the search criteria in `ssget.search` and
 
 If `name_or_id` is specified, it overrides any conflicting key-value settings in `**kwargs`.
 
-In `ssget.fetch`, `format` can be one of 'MM', 'MAT' or 'RB'; 'MM'
+In `ssgetpy.fetch`, `format` can be one of 'MM', 'MAT' or 'RB'; 'MM'
 is the default if `format` is omitted.  Finally, `location` refers
 to the directory where the matrices will be downloaded on the local
-machine. It defaults to `%APPDATA%/`ssget`` on Windows and
-`~/.ssget` on Unix-like platforms.
+machine. It defaults to `%APPDATA%/`ssgetpy`` on Windows and
+`~/.ssgetpy` on Unix-like platforms.
 
-In addition to its usage as a Python library, `ssget` can be run from
+In addition to its usage as a Python library, `ssgetpy` can be run from
 the command line as follows ::
 
-  python `ssget`
-  Usage: `ssget` [NameOrID] [options]
+  python `ssgetpy`
+  Usage: `ssgetpy` [NameOrID] [options]
 
      NameOrID             A numerical matrix ID or a pattern matching the name of
                           the matrix.
@@ -76,7 +76,7 @@ the command line as follows ::
     -o LOCATION, --outdir=LOCATION
                           The directory in the local machine where matrices will
                           be downloaded to. Defaults to
-                          `%AppData%\ssget` on Windows and `~/.ssget` on Unix.
+                          `%AppData%\ssgetpy` on Windows and `~/.ssgetpy` on Unix.
   
     Size and Non-zero filters:
       These options may be used to restrict the shape or number of non-zero

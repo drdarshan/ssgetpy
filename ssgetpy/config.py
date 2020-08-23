@@ -11,9 +11,9 @@ SS_ROOT_URL = "https://sparse.tamu.edu"
 SS_INDEX_URL = "/".join((SS_ROOT_URL, "files", "ssstats.csv"))
 
 if sys.platform == "win32":
-    SS_DIR = os.path.join(os.environ["APPDATA"], "ssget")
+    SS_DIR = os.path.join(os.environ["APPDATA"], "ssgetpy")
 else:
-    SS_DIR = os.path.join(os.environ["HOME"], ".ssget")
+    SS_DIR = os.path.join(os.environ["HOME"], ".ssgetpy")
 
 SS_DB = os.path.join(SS_DIR, SS_DB)
 

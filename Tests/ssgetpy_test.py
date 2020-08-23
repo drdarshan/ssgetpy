@@ -1,5 +1,5 @@
 import unittest
-import ssget as p
+import ssgetpy as p
 
 class TestPyUFGet(unittest.TestCase):
     def test_search_by_id(self):

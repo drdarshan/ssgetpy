@@ -1,4 +1,4 @@
-
+import datetime
 import logging
 logger = logging.getLogger(__name__)
 
@@ -11,6 +11,7 @@ class MatrixDB:
         import sqlite3
         self.db = db;
         self.matrix_table = table
+        self.update_table = 'update_table'
         self.conn = sqlite3.connect(self.db)
         self._create_table()
             
@@ -18,9 +19,19 @@ class MatrixDB:
         return int(self.conn.execute("SELECT COUNT(*) FROM %s" % self.matrix_table).fetchall()[0][0])
 
     nrows = property(_get_nrows)
+    
+    def _get_last_update(self):
+        last_update = self.conn.execute('SELECT MAX(update_date) '+\
+                                        f'from {self.update_table}').fetchall()[0][0]
+        return datetime.datetime.fromisoformat(last_update) if last_update \
+            else datetime.datetime.utcfromtimestamp(0)
 
+    last_update = property(_get_last_update)
+    
     def _drop_table(self):
-        self.conn.execute("DROP TABLE %s" % self.matrix_table)
+        self.conn.execute("DROP TABLE IF EXISTS %s" % self.matrix_table)
+        self.conn.execute(f'DROP TABLE IF EXISTS {self.update_table}')
+        self.conn.commit()
 
     def _create_table(self):
         self.conn.execute('''CREATE TABLE IF NOT EXISTS %s (
@@ -36,11 +47,13 @@ class MatrixDB:
                              psym REAL,
                              nsym REAL,
                              kind TEXT)''' % self.matrix_table)
-
+        
+        self.conn.execute(f'CREATE TABLE IF NOT EXISTS {self.update_table} (update_date TIMESTAMP)')
         self.conn.commit()
         
     def insert(self, values):
         self.conn.executemany("INSERT INTO %s VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" % self.matrix_table, values)
+        self.conn.execute(f"INSERT INTO {self.update_table} VALUES (datetime('now'))")
         self.conn.commit()
     
     def refresh(self, values):

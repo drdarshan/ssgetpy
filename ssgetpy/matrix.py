@@ -38,7 +38,7 @@ class Matrix:
     `kind`  : The underlying problem domain
     '''
 
-    attr_list =  ['Id', 'Group', 'Name', 'Rows', 'Cols', 'NNZ', 'DType', '2D/3D Discretization?', 'SPD?', 'Pattern Symmetry', 'Numerical Symmetry', 'Kind', 'Icon']
+    attr_list =  ['Id', 'Group', 'Name', 'Rows', 'Cols', 'NNZ', 'DType', '2D/3D Discretization?', 'SPD?', 'Pattern Symmetry', 'Numerical Symmetry', 'Kind', 'Spy Plot']
 
     @staticmethod
     def html_header():
@@ -133,7 +133,8 @@ class Matrix:
             response = requests.get(self.url(format), stream=True)
             content_length = int(response.headers['content-length'])
 
-            with open(localdest, "wb") as outfile, tqdm(total=content_length, desc=self.name, unit='B') as pbar:
+            with open(localdest, "wb") as outfile, \
+                 tqdm(total=content_length, desc=self.name, unit='B') as pbar:
                 for chunk in response.iter_content(chunk_size=4096):
                     outfile.write(chunk)
                     pbar.update(4096)
