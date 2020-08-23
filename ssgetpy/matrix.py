@@ -46,7 +46,7 @@ class Matrix:
 
     @staticmethod
     def _render_item_html(key, value):
-        if key == 'Icon':
+        if key == 'Spy Plot':
             return f'<img src="{value}">'
         if key in ('Pattern Symmetry', 'Numerical Symmetry'):
             return f'{value:0.2}'
