@@ -6,7 +6,9 @@ import tarfile
 
 def extract(bundle):
     basedir, filename = os.path.split(bundle)
-    tarfilename = os.path.join(basedir, ".".join((filename.split(".")[0], "tar")))
+    tarfilename = os.path.join(
+        basedir, ".".join((filename.split(".")[0], "tar"))
+    )
     gzfile = gzip.open(bundle, "rb")
     with open(tarfilename, "wb") as outtarfile:
         shutil.copyfileobj(gzfile, outtarfile)

@@ -1,5 +1,6 @@
 """
-The `csvindex` module parses the SSStats.csv file and generate entries for each row in a Matrix database
+The `csvindex` module parses the SSStats.csv file and
+generates entries for each row in a Matrix database
 """
 
 import csv
@@ -14,7 +15,8 @@ logger = logging.getLogger(__name__)
 
 def getdtype(real, logical):
     """
-    Converts a (real, logical) pair into one of the three types, 'real', 'complex' and 'binary'
+    Converts a (real, logical) pair into one of the three types:
+    'real', 'complex' and 'binary'
     """
     return "binary" if logical else ("real" if real else "complex")
 

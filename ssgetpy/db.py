@@ -19,9 +19,9 @@ class MatrixDB:
 
     def _get_nrows(self):
         return int(
-            self.conn.execute("SELECT COUNT(*) FROM %s" % self.matrix_table).fetchall()[
-                0
-            ][0]
+            self.conn.execute(
+                "SELECT COUNT(*) FROM %s" % self.matrix_table
+            ).fetchall()[0][0]
         )
 
     nrows = property(_get_nrows)
@@ -46,12 +46,12 @@ class MatrixDB:
     def _create_table(self):
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS %s (
-                             id INTEGER PRIMARY KEY, 
-                             matrixgroup TEXT, 
-                             name TEXT, 
-                             rows INTEGER, 
-                             cols INTEGER, 
-                             nnz INTEGER, 
+                             id INTEGER PRIMARY KEY,
+                             matrixgroup TEXT,
+                             name TEXT,
+                             rows INTEGER,
+                             cols INTEGER,
+                             nnz INTEGER,
                              dtype TEXT,
                              is2d3d INTEGER,
                              isspd INTEGER,
@@ -62,15 +62,20 @@ class MatrixDB:
         )
 
         self.conn.execute(
-            f"CREATE TABLE IF NOT EXISTS {self.update_table} (update_date TIMESTAMP)"
+            f"CREATE TABLE IF NOT EXISTS {self.update_table} "
+            + "(update_date TIMESTAMP)"
         )
         self.conn.commit()
 
     def insert(self, values):
         self.conn.executemany(
-            "INSERT INTO %s VALUES(?,?,?,?,?,?,?,?,?,?,?,?)" % self.matrix_table, values
+            "INSERT INTO %s VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
+            % self.matrix_table,
+            values,
         )
-        self.conn.execute(f"INSERT INTO {self.update_table} VALUES (datetime('now'))")
+        self.conn.execute(
+            f"INSERT INTO {self.update_table} " + "VALUES (datetime('now'))"
+        )
         self.conn.commit()
 
     def refresh(self, values):
@@ -79,7 +84,9 @@ class MatrixDB:
         self.insert(values)
 
     def dump(self):
-        return self.conn.execute("SELECT * from %s" % self.matrix_table).fetchall()
+        return self.conn.execute(
+            "SELECT * from %s" % self.matrix_table
+        ).fetchall()
 
     @staticmethod
     def _is_constraint(field, value):
@@ -162,4 +169,6 @@ class MatrixDB:
 
         logger.debug(querystring)
 
-        return MatrixList(Matrix(*x) for x in self.conn.execute(querystring).fetchall())
+        return MatrixList(
+            Matrix(*x) for x in self.conn.execute(querystring).fetchall()
+        )

@@ -10,8 +10,9 @@ logger = logging.getLogger(__name__)
 
 def search(name_or_id=None, **kwargs):
     """
-    Search for matrix/matrices with a given name pattern or numeric ID. Optionally, limit
-    search to matrices of a specific data type or with the specified range of rows, columns and non-zero values.    
+    Search for matrix/matrices with a given name pattern or numeric ID.
+    Optionally, limit search to matrices of a specific data type or
+    with the specified range of rows, columns and non-zero values.
     """
     logger.debug("Name or ID = " + str(name_or_id))
     if name_or_id is not None:
@@ -26,12 +27,16 @@ def search(name_or_id=None, **kwargs):
         elif isinstance(name_or_id, int):
             kwargs["matid"] = name_or_id
         else:
-            raise ValueError("First argument to search must be a string or an integer")
+            raise ValueError(
+                "First argument to search " + "must be a string or an integer"
+            )
 
     return instance.search(**kwargs)
 
 
-def fetch(name_or_id=None, format="MM", location=None, dry_run=False, **kwargs):
+def fetch(
+    name_or_id=None, format="MM", location=None, dry_run=False, **kwargs
+):
     matrices = search(name_or_id, **kwargs)
     if len(matrices) > 0:
         logger.info(
@@ -88,7 +93,6 @@ def cli(argv=sys.argv[1:]):
         help="The element type of the matrix/matrices"
         ", can be one of 'real', 'complex' or 'binary'.",
     )
-    # parser.add_argument("-s", "--spd", action="store_true", dest="isspd", help="Only selects SPD matrices.")
     parser.add_argument(
         "-f",
         "--format",
@@ -97,7 +101,8 @@ def cli(argv=sys.argv[1:]):
         dest="format",
         default="MM",
         help="The format in which to download the matrix/matrices.\
-                      Can be one of 'MM', 'MAT' or 'RB' for MatrixMarket, MATLAB or Rutherford-Boeing formats respectively. Defaults to 'MM'.",
+              Can be one of 'MM', 'MAT' or 'RB' for MatrixMarket, \
+              MATLAB or Rutherford-Boeing formats respectively.",
     )
     parser.add_argument(
         "-l",
@@ -106,7 +111,7 @@ def cli(argv=sys.argv[1:]):
         type=int,
         default=10,
         dest="limit",
-        help="The maximum number of matrices to be downloaded. Defaults to 10.",
+        help="The maximum number of matrices to be downloaded.",
     )
     parser.add_argument(
         "-o",
@@ -114,7 +119,8 @@ def cli(argv=sys.argv[1:]):
         action="store",
         type=str,
         dest="location",
-        help="The directory in the local machine where matrices will be downloaded to. Defaults to "
+        help="The directory in the local machine where matrices will be \
+              downloaded to. Defaults to "
         + SS_DIR,
     )
     parser.add_argument(
@@ -122,12 +128,14 @@ def cli(argv=sys.argv[1:]):
         action="store_true",
         dest="dry_run",
         default=False,
-        help="If True, only print the matrices that will be downloaded but do not actually download them.",
+        help="If True, only print the matrices that will be downloaded \
+              but do not actually download them.",
     )
 
     g = parser.add_argument_group(
         "Size and Non-zero filters",
-        "These options may be used to restrict the shape or number of non-zero elements of the matrices to be downloaded",
+        "These options may be used to restrict the shape or number "
+        + "of non-zero elements of the matrices to be downloaded",
     )
 
     g.add_argument(
@@ -175,7 +183,12 @@ def cli(argv=sys.argv[1:]):
 
     lg = parser.add_argument_group(
         "Logging and verbosity options",
-        "These options govern the level of spew from ssget. By default, ssget prints a small number of messages such as the number of matrices being downloaded and where they are being downloaded to. To suppress these message, pass --quiet. To enable debug diagnostics, pass --verbose.",
+        "These options govern the level of spew from ssgetpy. "
+        + "By default, ssgetpy prints a small number of messages "
+        + "such as the number of matrices being downloaded and "
+        + "where they are being downloaded to. "
+        + "To suppress these message, pass --quiet. "
+        + "To enable debug diagnostics, pass --verbose.",
     )
     lg.add_argument(
         "-v",

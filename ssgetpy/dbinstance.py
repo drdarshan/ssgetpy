@@ -1,6 +1,6 @@
 """
-The `dbinstance` module creates a singleton `MatrixDB` database instance, populating
-it from UFStats.csv if necessary. 
+The `dbinstance` module creates a singleton `MatrixDB` database
+instance, populating it from ssstats.csv if necessary.
 """
 import datetime
 import logging

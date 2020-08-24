@@ -1,5 +1,4 @@
 import os
-import shutil
 import time
 
 import requests
@@ -27,14 +26,15 @@ class MatrixList(list):
 
 class Matrix:
     """
-    A `Matrix` object represents a single matrix in the University of Florida sparse matrix collection. It has the following attributes:
+    A `Matrix` object represents an entry in the SuiteSparse matrix collection.
+    It has the following attributes:
     `id`   : The unique identifier for the matrix in the database.
     `group`: The name of the group this matrix belongs to.
     `name` : The name of this matrix.
     `rows` : The number of rows.
     `cols` : The number of columns.
     `nnz`  : The number of non-zero elements.
-    `dtype`: The datatype of the non-zero elements, `real`, `complex` or `binary`.
+    `dtype`: The datatype of non-zero elements: `real`, `complex` or `binary`
     `is2d3d`: True if this matrix comes from a 2D or 3D discretization.
     `isspd` : True if this matrix is symmetric, positive definite
     `kind`  : The underlying problem domain
@@ -158,7 +158,8 @@ class Matrix:
         destpath = destpath or self._defaultdestpath(format)
 
         # localdestpath is the directory containing the unzipped files
-        # in the case of MM and RB (if extract is true) or the file it self in the case of MAT (or if extract is False)
+        # in the case of MM and RB (if extract is true) or
+        # the file itself in the case of MAT (or if extract is False)
         localdest = os.path.join(destpath, self._filename(format))
         localdestpath = (
             localdest
@@ -170,14 +171,16 @@ class Matrix:
 
     def download(self, format="MM", destpath=None, extract=False):
         """
-        Downloads this `Matrix` instance to the local machine, optionally unpacking any TAR.GZ files.
+        Downloads this `Matrix` instance to the local machine,
+        optionally unpacking any TAR.GZ files.
         """
         # destpath is the directory containing the matrix
         # It is of the form ~/.PyUFGet/MM/HB
         destpath = destpath or self._defaultdestpath(format)
 
         # localdest is matrix file (.MAT or .TAR.GZ)
-        # if extract = True, localdestpath is the directory containing the unzipped matrix
+        # if extract = True, localdestpath is the directory
+        # containing the unzipped matrix
         localdestpath, localdest = self.localpath(format, destpath, extract)
 
         if not os.access(localdestpath, os.F_OK):
@@ -208,5 +211,6 @@ class Matrix:
 
     def _repr_html_(self):
         return (
-            f"<table>{Matrix.html_header()}<tbody>{self.to_html_row()}</tbody></table>"
+            f"<table>{Matrix.html_header()}"
+            + f"<tbody>{self.to_html_row()}</tbody></table>"
         )
