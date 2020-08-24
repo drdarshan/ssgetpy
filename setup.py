@@ -16,7 +16,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     packages=["ssgetpy"],
-    entry_points={"console_scripts": ["ssgetpy = ssgetpy.query:cli",],},
+    entry_points={"console_scripts": ["ssgetpy = ssgetpy.query:cli", ], },
     python_requires=">3.5.2",
     install_requires=["requests>=2.22", "tqdm>=4.48"],
     classifiers=[
