@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="ssgetpy",
-    version="1.0",
+    version="1.0-pre",
     description="A Python interface to the SuiteSparse Matrix Collection",
     author="Sudarshan Raghunathan",
     author_email="darshan@alum.mit.edu",
@@ -18,7 +18,7 @@ setup(
     packages=["ssgetpy"],
     entry_points={"console_scripts": ["ssgetpy = ssgetpy.query:cli", ], },
     python_requires=">3.5.2",
-    install_requires=["requests>=2.22", "tqdm>=4.48"],
+    install_requires=["requests>=2.22", "tqdm>=4.41"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

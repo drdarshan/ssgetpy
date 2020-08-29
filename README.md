@@ -1,29 +1,19 @@
 # SSGETPY: Search and download sparse matrices from the SuiteSparse Matrix Collection
 ![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/drdarshan/ssgetpy/master?filepath=demo.ipynb)
 
-## About
-I recently needed to download some test matrices from the [SuiteSparse Matrix Collection](https://people.engr.tamu.edu/davis/matrices.html). Unfortunately I noticed that
-the existing Python interface would only let me download matrices by
-their IDs and there was no way to filter matrices before downloading
-them. While this functionality was available in the MATLAB and Java
-implementations, there was no convenient way to use it from my
-(PyUnit-based) tests.
 
-I therefore set out to create my own little utility to search, filter
-and download sparse matrices from Python. The index of matrices is
-created from the same CSV file used by the Java interface. However, I
-persist the index in a SQLite database so I do not have to parse CSV
-files more than once and I can easily map all filters, no matter how
-complex to SQLite's dialect of SQL. Hopefully, it should also make it
-easier to create ports of this utility to other languages and
-environments without having to duplicate a lot of the functionality. 
- 
+`ssgetpy` is a little Python library and command-line program to search, filter and download matrices from the [SuiteSparse Matrix Collection](https://people.engr.tamu.edu/davis/matrices.html) similar to the existing Java and MATLAB tools. 
+
+The index of matrices is created from the same CSV file used by the
+Java interface. However, the index in cached in a local SQLite
+database to make querying it more convenient. 
 
 ## Requirements and installation
-I have tried to keep the list of prerequisites as small as
-possible. You therefore only need stock Python 3.6 or higher to run
-``ssgetpy``; you do not need NumPy, SciPy, HDF5 or other non-standard
-packages.
+
+`ssgetpy` works with Python 3.6 or above. Besides the standard
+library, it depends on `requests` and `tqdm`. Since `ssgetpy` doesn't
+actually parse matrix data, it doesn't require dependencies like
+`NumPy` or `SciPy`.
 
 To install, simply run:
 ```
@@ -49,6 +39,8 @@ without downloading them.
 * Download only the first 5 problems arising from structural analysis:
   ``fetch(kind = "structural", limit = 5)``
 * Download the problems in the previous example as MATLAB .MAT files: ``fetch(kind = "structural", format = "MAT", limit = 5)``
+
+For more examples, please see the accompanying [Jupyter notebook](demo.ipynb)
 
 
 
