@@ -1,5 +1,5 @@
 # SSGETPY: Search and download sparse matrices from the SuiteSparse Matrix Collection
-![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/drdarshan/ssgetpy/master?filepath=demo.ipynb)
+![Python package](https://github.com/drdarshan/PyUFGet/workflows/Python%20package/badge.svg) [![PyPI version](https://badge.fury.io/py/ssgetpy.svg)](https://badge.fury.io/py/ssgetpy) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/drdarshan/ssgetpy/master?filepath=demo.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/drdarshan/ssgetpy/blob/master/demo.ipynb)
 
 
 `ssgetpy` is a little Python library and command-line program to search, filter and download matrices from the [SuiteSparse Matrix Collection](https://people.engr.tamu.edu/davis/matrices.html) similar to the existing Java and MATLAB tools. 
@@ -40,7 +40,7 @@ without downloading them.
   ``fetch(kind = "structural", limit = 5)``
 * Download the problems in the previous example as MATLAB .MAT files: ``fetch(kind = "structural", format = "MAT", limit = 5)``
 
-For more examples, please see the accompanying [Jupyter notebook](demo.ipynb)
+For more examples, please see the accompanying [Jupyter notebook](demo.ipynb).
 
 
 
