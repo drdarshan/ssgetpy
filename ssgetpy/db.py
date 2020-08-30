@@ -7,6 +7,12 @@ from .matrix import Matrix, MatrixList
 logger = logging.getLogger(__name__)
 
 
+def _from_timestamp(timestamp):
+    if hasattr(datetime.datetime, "fromisoformat"):
+        return datetime.datetime.fromisoformat(timestamp)
+    return datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+
+
 class MatrixDB:
     def __init__(self, db=SS_DB, table=SS_TABLE):
         import sqlite3
@@ -31,7 +37,7 @@ class MatrixDB:
             "SELECT MAX(update_date) " + f"from {self.update_table}"
         ).fetchall()[0][0]
         return (
-            datetime.datetime.fromisoformat(last_update)
+            _from_timestamp(last_update)
             if last_update
             else datetime.datetime.utcfromtimestamp(0)
         )
