@@ -116,7 +116,7 @@ class Matrix:
         if key == "Spy Plot":
             return f'<img src="{value}">'
         if key == "Group":
-            return f'<a href="{self.group_info_url()} target="_blank">{value}</a>'
+            return f'<a href="{self.group_info_url()}" target="_blank">{value}</a>'
         if key == "Name":
             return f'<a href="{self.matrix_info_url()}" target="_blank">{value}</a>'
         if key in ("Pattern Symmetry", "Numerical Symmetry"):
