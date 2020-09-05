@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="ssgetpy",
-    version="1.0-pre1",
+    version="1.0-pre2",
     description="A Python interface to the SuiteSparse Matrix Collection",
     author="Sudarshan Raghunathan",
     author_email="darshan@alum.mit.edu",

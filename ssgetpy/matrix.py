@@ -64,16 +64,6 @@ class Matrix:
             + "</thead>"
         )
 
-    @staticmethod
-    def _render_item_html(key, value):
-        if key == "Spy Plot":
-            return f'<img src="{value}">'
-        if key in ("Pattern Symmetry", "Numerical Symmetry"):
-            return f"{value:0.2}"
-        if key in ("2D/3D Discretization?", "SPD?"):
-            return "Yes" if value else "No"
-        return str(value)
-
     def __init__(
         self,
         identifier,
@@ -122,11 +112,25 @@ class Matrix:
             self.icon_url(),
         )
 
+    def _render_item_html(self, key, value):
+        if key == "Spy Plot":
+            return f'<img src="{value}">'
+        if key == "Group":
+            return f'<a href="{self.group_info_url()} target="_blank">{value}</a>'
+        if key == "Name":
+            return f'<a href="{self.matrix_info_url()}" target="_blank">{value}</a>'
+        if key in ("Pattern Symmetry", "Numerical Symmetry"):
+            return f"{value:0.2}"
+        if key in ("2D/3D Discretization?", "SPD?"):
+            return "Yes" if value else "No"
+
+        return str(value)
+
     def to_html_row(self):
         return (
             "<tr>"
             + "".join(
-                f"<td>{Matrix._render_item_html(key, value)}</td>"
+                f"<td>{self._render_item_html(key, value)}</td>"
                 for key, value in zip(Matrix.attr_list, self.to_tuple())
             )
             + "</tr>"
@@ -145,6 +149,12 @@ class Matrix:
 
     def icon_url(self):
         return "/".join((SS_ROOT_URL, "files", self.group, self.name + ".png"))
+
+    def group_info_url(self):
+        return "/".join((SS_ROOT_URL, self.group))
+
+    def matrix_info_url(self):
+        return "/".join((SS_ROOT_URL, self.group, self.name))
 
     def url(self, format="MM"):
         """
