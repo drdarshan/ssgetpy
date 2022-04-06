@@ -39,6 +39,7 @@ class Matrix:
     `isspd` : True if this matrix is symmetric, positive definite
     `kind`  : The underlying problem domain
     """
+    CHUNK_SIZE = 16384
 
     attr_list = [
         "Id",
@@ -203,10 +204,9 @@ class Matrix:
             with open(localdest, "wb") as outfile, tqdm(
                 total=content_length, desc=self.name, unit="B"
             ) as pbar:
-                for chunk in response.iter_content(chunk_size=4096):
+                for chunk in response.iter_content(chunk_size=self.CHUNK_SIZE):
                     outfile.write(chunk)
-                    pbar.update(4096)
-                    time.sleep(0.1)
+                    pbar.update(self.CHUNK_SIZE)
 
             if extract and (format == "MM" or format == "RB"):
                 bundle.extract(localdest)
